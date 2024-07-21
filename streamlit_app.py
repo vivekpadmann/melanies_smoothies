@@ -19,17 +19,15 @@ name_on_order = st.text_input('Name on Smoothie:')
 st.write("The name on your Smoothie will be:", name_on_order)
 
 session = cnx.session()
-my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'), col('SEARCH_ON'))
+my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'), col('SEARCH_ON')).to_pandas()
 #st.dataframe(data=my_dataframe, use_container_width=True)
-
-#cnvert the snowpark datrafrom to a pandas dataframe so we can use the LOC Function
-pd_df=my_dataframe.to.pandas()
-#st.dataframe(pd_df)
+pd_df=my_dataframe.copy()
+st.dataframe(pd_df)
 #st.stop()
 
 ingredients_list = st.multiselect(
     'Choose up to 5 ingrediants:'
-    , my_dataframe
+    , pd_df['FRUIT_NAME']
     , max_selections=5
     )
 if ingredients_list:

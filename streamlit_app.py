@@ -1,6 +1,7 @@
 # Import python packages
 import streamlit as st
 import requests
+import pandas as pd
 #from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col
 
@@ -20,6 +21,11 @@ st.write("The name on your Smoothie will be:", name_on_order)
 session = cnx.session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 #st.dataframe(data=my_dataframe, use_container_width=True)
+
+#cnvert the snowpark datrafrom to a pandas dataframe so we can use the LOC Function
+pd_df=my_dataframe.to.pandas()
+st.dataframe(pd_df)
+st.stop()
 
 ingredients_list = st.multiselect(
     'Choose up to 5 ingrediants:'
